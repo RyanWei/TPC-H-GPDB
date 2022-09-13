@@ -87,13 +87,18 @@ function source_bashrc() {
     # don't fail if an error is happening in the admin's profile
     source ${HOME}/.bashrc || true
   fi
-  count=$(egrep -c "source .*/greenplum_path.sh|\. .*/greenplum_path.sh" ${HOME}/.bashrc)
-  if [ ${count} -eq 0 ]; then
-      echo "${HOME}/.bashrc does not contain greenplum_path.sh"
+  if [ -f ${HOME}/.bash_profile ]; then
+    # don't fail if an error is happening in the admin's profile
+    source ${HOME}/.bash_profile || true
+  fi
+  count=$(egrep -c "source .*/greenplum_path.sh|\. .*/greenplum_path.sh" ${HOME}/.bashrc || true)
+  count2=$(egrep -c "source .*/greenplum_path.sh|\. .*/greenplum_path.sh" ${HOME}/.bash_profile || true)
+  if [ ${count} -eq 0 ] && [ ${count2} -eq 0 ]; then
+      echo "${HOME}/.bashrc and ${HOME}/.bash_profile does not contain greenplum_path.sh"
       echo "Please update your ${startup_file} for ${ADMIN_USER} and try again."
       exit 1
-  elif [ ${count} -gt 1 ]; then
-      echo "${HOME}/.bashrc contains multiple greenplum_path.sh entries"
+  elif [ ${count} -gt 1 ] || [ ${count2} -gt 1 ]; then
+      echo "${HOME}/.bashrc or ${HOME}/.bash_profile contains multiple greenplum_path.sh entries"
       echo "Please update your ${startup_file} for ${ADMIN_USER} and try again."
       exit 1
   else
@@ -131,7 +136,7 @@ export -f get_gpfdist_port
 
 function get_version() {
   #need to call source_bashrc first
-  VERSION=$(psql -v ON_ERROR_STOP=1 -t -A -c "SELECT CASE WHEN POSITION ('Greenplum Database 4.3' IN version) > 0 THEN 'gpdb_4_3' WHEN POSITION ('Greenplum Database 5' IN version) > 0 THEN 'gpdb_5' WHEN POSITION ('Greenplum Database 6' IN version) > 0 THEN 'gpdb_6' ELSE 'postgresql' END FROM version();") 
+  VERSION=$(psql -v ON_ERROR_STOP=1 -t -A -c "SELECT CASE WHEN POSITION ('Greenplum Database 4.3' IN version) > 0 THEN 'gpdb_4_3' WHEN POSITION ('Greenplum Database 5' IN version) > 0 THEN 'gpdb_5' WHEN POSITION ('Greenplum Database 6' IN version) > 0 THEN 'gpdb_6' WHEN POSITION ('Greenplum Database 7' IN version) > 0 THEN 'gpdb_7'ELSE 'postgresql' END FROM version();") 
   if [[ ${VERSION} =~ "gpdb" ]]; then
     quicklz_test=$(psql -v ON_ERROR_STOP=1 -t -A -c "SELECT COUNT(1) FROM pg_compression WHERE compname = 'quicklz'")
     if [ "${quicklz_test}" -eq "1" ]; then
