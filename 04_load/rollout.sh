@@ -45,7 +45,7 @@ function start_gpfdist()
     GEN_DATA_PATH="${GEN_DATA_PATH}/hbenchmark"
     PORT=$((GPFDIST_PORT + CHILD))
     echo "executing on ${EXT_HOST} ./start_gpfdist.sh $PORT ${GEN_DATA_PATH}"
-    ssh -n -f ${EXT_HOST} "bash -c 'cd ~${ADMIN_USER}; source ./.bash_profile; ./start_gpfdist.sh $PORT ${GEN_DATA_PATH}'"
+    ssh -n -f ${EXT_HOST} "bash -c 'cd ~${ADMIN_USER}; source ./.bash_profile; ./start_gpfdist.sh $PORT ${GEN_DATA_PATH} ${GPHOME}'"
     sleep 1
   done
 }
