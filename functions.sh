@@ -127,7 +127,7 @@ function get_gpfdist_port() {
 
   for i in $(seq 2 6); do
     if [ "${primary_base}" -ne "${i}" ] && [ "$mirror_base" -ne "${i}" ]; then
-      GPFDIST_PORT="${i}2000"
+      GPFDIST_PORT="${i}5880"
       break
     fi
   done
