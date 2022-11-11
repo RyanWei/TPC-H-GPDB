@@ -77,6 +77,7 @@ if [ "${DROP_EXISTING_TABLES}" == "true" ]; then
   done
 fi
 
+DropRoleDenp="drop owned by ${BENCH_ROLE} cascade"
 DropRole="DROP ROLE IF EXISTS ${BENCH_ROLE}"
 CreateRole="CREATE ROLE ${BENCH_ROLE}"
 GrantSchemaPrivileges="GRANT ALL PRIVILEGES ON SCHEMA ${SCHEMA_NAME} TO ${BENCH_ROLE}"
@@ -88,6 +89,8 @@ psql -tc "select \$\$GRANT ALL PRIVILEGES on table ${SCHEMA_NAME}.\$\$||tablenam
 start_log
 
 if [ "${BENCH_ROLE}" != "gpadmin" ]; then
+  log_time "Drop role dependencies for ${BENCH_ROLE}"
+  psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${DropRoleDenp}"
   log_time "Drop role ${BENCH_ROLE}"
   psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${DropRole}"
   log_time "Creating role ${BENCH_ROLE}"
