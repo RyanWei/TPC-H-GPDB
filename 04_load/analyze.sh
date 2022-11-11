@@ -23,7 +23,7 @@ if [ "$return_status" -eq "0" ]; then
 
 	start_log
 	id=${max_id}
-	schema_name="tpch"
+	schema_name=${SCHEMA_NAME}
 	table_name="tpch"
 	analyzedb -d ${dbname} -s tpch --full -a
 	tuples="0"
