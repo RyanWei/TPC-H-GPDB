@@ -88,10 +88,11 @@ psql -tc "select \$\$GRANT ALL PRIVILEGES on table ${SCHEMA_NAME}.\$\$||tablenam
 
 start_log
 
-set +e
 if [ "${BENCH_ROLE}" != "gpadmin" ]; then
+  set +e
   log_time "Drop role dependencies for ${BENCH_ROLE}"
   psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${DropRoleDenp}"
+  set -e
   log_time "Drop role ${BENCH_ROLE}"
   psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${DropRole}"
   log_time "Creating role ${BENCH_ROLE}"
@@ -101,7 +102,6 @@ if [ "${BENCH_ROLE}" != "gpadmin" ]; then
   log_time "Grant table privileges to role ${BENCH_ROLE}"
   psql -v ON_ERROR_STOP=0 -q -P pager=off -f ${PWD}/GrantTablePrivileges.sql
 fi
-set -e
 
 #log_time "Set search_path for database gpadmin"
 #psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${SetSearchPath}"
