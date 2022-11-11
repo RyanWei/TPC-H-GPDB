@@ -79,7 +79,7 @@ fi
 
 DropRole="DROP ROLE IF EXISTS ${BENCH_ROLE}"
 CreateRole="CREATE ROLE ${BENCH_ROLE}"
-GrantSchemaPrivileges="GRANT ALL PRIVILEGES ON ${SCHEMA_NAME} tpch TO ${BENCH_ROLE}"
+GrantSchemaPrivileges="GRANT ALL PRIVILEGES ON ${SCHEMA_NAME} TO ${BENCH_ROLE}"
 GrantTablePrivileges="GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ${SCHEMA_NAME} TO ${BENCH_ROLE}"
 echo "rm -f ${PWD}/GrantTablePrivileges.sql"
 rm -f ${PWD}/GrantTablePrivileges.sql
