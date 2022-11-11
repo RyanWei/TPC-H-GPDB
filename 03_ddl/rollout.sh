@@ -32,7 +32,7 @@ if [ "${DROP_EXISTING_TABLES}" == "true" ]; then
     fi
 
     log_time "psql -v ON_ERROR_STOP=1 -a -q -P pager=off -f ${i} -v SMALL_STORAGE=\"${SMALL_STORAGE}\" -v MEDIUM_STORAGE=\"${MEDIUM_STORAGE}\" -v LARGE_STORAGE=\"${LARGE_STORAGE}\" -v DISTRIBUTED_BY=\"${DISTRIBUTED_BY}\" -v ext_schema_name=\"${ext_schema_name}\" -v schema_name=\"${schema_name}\""
-    psql -v ON_ERROR_STOP=1 -q -a -P pager=off -f ${i} -v SMALL_STORAGE="${SMALL_STORAGE}" -v MEDIUM_STORAGE="${MEDIUM_STORAGE}" -v LARGE_STORAGE="${LARGE_STORAGE}" -v DISTRIBUTED_BY="${DISTRIBUTED_BY}" -v ext_schema_name="${ext_schema_name}" -v schema_name="${schema_name}"
+    psql -v ON_ERROR_STOP=1 -q -q -P pager=off -f ${i} -v SMALL_STORAGE="${SMALL_STORAGE}" -v MEDIUM_STORAGE="${MEDIUM_STORAGE}" -v LARGE_STORAGE="${LARGE_STORAGE}" -v DISTRIBUTED_BY="${DISTRIBUTED_BY}" -v ext_schema_name="${ext_schema_name}" -v schema_name="${schema_name}"
     print_log
   done
 
@@ -79,7 +79,7 @@ fi
 
 DropRole="DROP ROLE IF EXISTS ${BENCH_ROLE}"
 CreateRole="CREATE ROLE ${BENCH_ROLE}"
-GrantSchemaPrivileges="GRANT ALL PRIVILEGES ON ${SCHEMA_NAME} TO ${BENCH_ROLE}"
+GrantSchemaPrivileges="GRANT ALL PRIVILEGES ON SCHEMA ${SCHEMA_NAME} TO ${BENCH_ROLE}"
 GrantTablePrivileges="GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA ${SCHEMA_NAME} TO ${BENCH_ROLE}"
 echo "rm -f ${PWD}/GrantTablePrivileges.sql"
 rm -f ${PWD}/GrantTablePrivileges.sql
