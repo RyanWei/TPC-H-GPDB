@@ -2,7 +2,6 @@
 set -e
 
 PWD=$(get_pwd ${BASH_SOURCE[0]})
-source $PWD/../functions.sh
 
 step="ddl"
 init_log ${step}
@@ -86,7 +85,7 @@ GrantSchemaPrivileges="GRANT ALL PRIVILEGES ON SCHEMA tpch TO ${BENCH_ROLE}"
 GrantTablePrivileges="GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA tpch TO ${BENCH_ROLE}"
 echo "rm -f ${PWD}/GrantTablePrivileges.sql"
 rm -f ${PWD}/GrantTablePrivileges.sql
-psql -tc "select \$\$GRANT ALL PRIVILEGES on table ${SCHEMA_NAME}.\$\$||tablename||\$\$ TO ${BENCH_ROLE};\$\$ from pg_tables where schemaname='${BENCH_ROLE}'" > ${PWD}/GrantTablePrivileges.sql
+psql -tc "select \$\$GRANT ALL PRIVILEGES on table ${SCHEMA_NAME}.\$\$||tablename||\$\$ TO ${BENCH_ROLE};\$\$ from pg_tables where schemaname='${SCHEMA_NAME}'" > ${PWD}/GrantTablePrivileges.sql
 
 start_log
 
