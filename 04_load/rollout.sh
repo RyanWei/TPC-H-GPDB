@@ -80,7 +80,7 @@ if [ "${PGPORT}" == "" ]; then
 fi
 
 
-schema_name="tpch"
+schema_name=${SCHEMA_NAME}
 table_name="tpch"
 
 start_log

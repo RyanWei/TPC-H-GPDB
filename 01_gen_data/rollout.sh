@@ -64,7 +64,7 @@ function gen_data() {
 step="gen_data"
 init_log ${step}
 start_log
-schema_name="tpch"
+schema_name=${SCHEMA_NAME}
 table_name="gen_data"
 
 if [ "${GEN_NEW_DATA}" == "true" ]; then
