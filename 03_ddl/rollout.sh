@@ -95,7 +95,7 @@ if [ "${BENCH_ROLE}" != "gpadmin" ]; then
   log_time "Grant schema privileges to role ${BENCH_ROLE}"
   psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${GrantSchemaPrivileges}"
   log_time "Grant table privileges to role ${BENCH_ROLE}"
-  psql -tc "select \$\$GRANT ALL PRIVILEGES on table ${SCHEMA_NAME}.\$\$||tablename||\$\$ TO hbench;\$\$ from pg_tables where schemaname='${BENCH_ROLE}'"|psql
+  psql -tc "select \$\$GRANT ALL PRIVILEGES on table ${SCHEMA_NAME}.\$\$||tablename||\$\$ TO ${BENCH_ROLE};\$\$ from pg_tables where schemaname='${BENCH_ROLE}'"|psql
   #psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${GrantTablePrivileges}"
 fi
 
