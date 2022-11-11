@@ -31,8 +31,8 @@ if [ "${DROP_EXISTING_TABLES}" == "true" ]; then
       DISTRIBUTED_BY="DISTRIBUTED BY (${distribution})"
     fi
 
-    log_time "psql -v ON_ERROR_STOP=1 -P pager=off -f ${i} -v SMALL_STORAGE=\"${SMALL_STORAGE}\" -v MEDIUM_STORAGE=\"${MEDIUM_STORAGE}\" -v LARGE_STORAGE=\"${LARGE_STORAGE}\" -v DISTRIBUTED_BY=\"${DISTRIBUTED_BY}\" -v ext_schema_name=\"$ext_schema_name\" -v schema_name=\"$schema_name\""
-    psql -v ON_ERROR_STOP=1 -P pager=off -f ${i} -v SMALL_STORAGE="${SMALL_STORAGE}" -v MEDIUM_STORAGE="${MEDIUM_STORAGE}" -v LARGE_STORAGE="${LARGE_STORAGE}" -v DISTRIBUTED_BY="${DISTRIBUTED_BY} -v ext_schema_name="$ext_schema_name" -v schema_name="$schema_name""
+    log_time "psql -v ON_ERROR_STOP=1 -P pager=off -f ${i} -v SMALL_STORAGE=\"${SMALL_STORAGE}\" -v MEDIUM_STORAGE=\"${MEDIUM_STORAGE}\" -v LARGE_STORAGE=\"${LARGE_STORAGE}\" -v DISTRIBUTED_BY=\"${DISTRIBUTED_BY}\" -v ext_schema_name=\"${ext_schema_name}\" -v schema_name=\"${schema_name}\""
+    psql -v ON_ERROR_STOP=1 -P pager=off -f ${i} -v SMALL_STORAGE="${SMALL_STORAGE}" -v MEDIUM_STORAGE="${MEDIUM_STORAGE}" -v LARGE_STORAGE="${LARGE_STORAGE}" -v DISTRIBUTED_BY="${DISTRIBUTED_BY}" -v ext_schema_name="${ext_schema_name}" -v schema_name="${schema_name}"
     print_log
   done
 
