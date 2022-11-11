@@ -83,7 +83,9 @@ DropRole="DROP ROLE IF EXISTS ${BENCH_ROLE}"
 CreateRole="CREATE ROLE ${BENCH_ROLE}"
 GrantSchemaPrivileges="GRANT ALL PRIVILEGES ON SCHEMA tpch TO ${BENCH_ROLE}"
 GrantTablePrivileges="GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA tpch TO ${BENCH_ROLE}"
-#SetSearchPath="ALTER database gpadmin SET search_path=tpch, \"\${user}\", public"
+echo "rm -f ${PWD}/GrantTablePrivileges.sql"
+rm -f ${PWD}/GrantTablePrivileges.sql
+psql -tc "select \$\$GRANT ALL PRIVILEGES on table ${SCHEMA_NAME}.\$\$||tablename||\$\$ TO ${BENCH_ROLE};\$\$ from pg_tables where schemaname='${BENCH_ROLE}'" > ${PWD}/GrantTablePrivileges.sql
 
 start_log
 
@@ -95,8 +97,7 @@ if [ "${BENCH_ROLE}" != "gpadmin" ]; then
   log_time "Grant schema privileges to role ${BENCH_ROLE}"
   psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${GrantSchemaPrivileges}"
   log_time "Grant table privileges to role ${BENCH_ROLE}"
-  psql -tc "select \$\$GRANT ALL PRIVILEGES on table ${SCHEMA_NAME}.\$\$||tablename||\$\$ TO ${BENCH_ROLE};\$\$ from pg_tables where schemaname='${BENCH_ROLE}'"|psql
-  #psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${GrantTablePrivileges}"
+  psql -v ON_ERROR_STOP=0 -q -P pager=off -f ${PWD}/GrantTablePrivileges.sql
 fi
 
 #log_time "Set search_path for database gpadmin"
