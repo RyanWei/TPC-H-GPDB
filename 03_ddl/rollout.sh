@@ -14,7 +14,7 @@ if [ "${DROP_EXISTING_TABLES}" == "true" ]; then
   for i in $(ls ${PWD}/*.${filter}.*.sql); do
     file_name=$(echo ${i} | awk -F '/' '{print $NF}')
     id=$(echo ${file_name} | awk -F '.' '{print $1}')
-    schema_name=$(echo ${file_name} | awk -F '.' '{print $2}')
+    schema_name=${SCHEMA_NAME}
     table_name=$(echo ${file_name} | awk -F '.' '{print $3}')
     start_log
 

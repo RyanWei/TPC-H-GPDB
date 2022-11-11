@@ -34,7 +34,7 @@ else
 
 		start_log
 		id=$(echo ${i} | awk -F '.' '{print $1}')
-		schema_name=$(echo ${i} | awk -F '.' '{print $2}')
+		schema_name=${SCHEMA_NAME}
 		table_name=$(echo ${i} | awk -F '.' '{print $3}')
 
 		log_time "psql -a -v ON_ERROR_STOP=ON -c \"ANALYZE ${schema_name}.${table_name}\""
@@ -48,7 +48,7 @@ else
 		start_log
 
 		id=$(echo ${i} | awk -F '.' '{print $1}')
-		schema_name=$(echo ${i} | awk -F '.' '{print $2}')
+		schema_name=${SCHEMA_NAME}
 		table_name=$(echo ${i} | awk -F '.' '{print $3}')
 
 		log_time "psql -a -v ON_ERROR_STOP=ON -c \"ANALYZE ROOTPARTITION ${schema_name}.${table_name}\""

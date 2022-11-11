@@ -57,7 +57,7 @@ for i in $(ls ${PWD}/*.${filter}.*.sql); do
   start_log
 
   id=$(echo ${i} | awk -F '.' '{print $1}')
-  schema_name=$(echo ${i} | awk -F '.' '{print $2}')
+  schema_name=${SCHEMA_NAME}
   table_name=$(echo ${i} | awk -F '.' '{print $3}')
 
   log_time "psql -v ON_ERROR_STOP=1 -f ${i} | grep INSERT | awk -F ' ' '{print \$3}'"
