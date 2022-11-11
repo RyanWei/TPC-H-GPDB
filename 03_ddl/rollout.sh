@@ -2,6 +2,7 @@
 set -e
 
 PWD=$(get_pwd ${BASH_SOURCE[0]})
+source $PWD/../functions.sh
 
 step="ddl"
 init_log ${step}
