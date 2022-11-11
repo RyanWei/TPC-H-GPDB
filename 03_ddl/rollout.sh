@@ -15,6 +15,7 @@ if [ "${DROP_EXISTING_TABLES}" == "true" ]; then
     file_name=$(echo ${i} | awk -F '/' '{print $NF}')
     id=$(echo ${file_name} | awk -F '.' '{print $1}')
     schema_name=${SCHEMA_NAME}
+    ext_schema_name= "ext_${SCHEMA_NAME}"
     table_name=$(echo ${file_name} | awk -F '.' '{print $3}')
     start_log
 
@@ -23,8 +24,6 @@ if [ "${DROP_EXISTING_TABLES}" == "true" ]; then
     else
       for z in $(cat ${PWD}/distribution.txt); do
         table_name2=$(echo ${z} | awk -F '|' '{print $2}')
-        echo ${table_name}
-        echo ${table_name2}
         if [ "${table_name2}" == "${table_name}" ]; then
           distribution=$(echo ${z} | awk -F '|' '{print $3}')
         fi
@@ -32,8 +31,8 @@ if [ "${DROP_EXISTING_TABLES}" == "true" ]; then
       DISTRIBUTED_BY="DISTRIBUTED BY (${distribution})"
     fi
 
-    log_time "psql -v ON_ERROR_STOP=1 -q -a -P pager=off -f ${i} -v SMALL_STORAGE=\"${SMALL_STORAGE}\" -v MEDIUM_STORAGE=\"${MEDIUM_STORAGE}\" -v LARGE_STORAGE=\"${LARGE_STORAGE}\" -v DISTRIBUTED_BY=\"${DISTRIBUTED_BY}\""
-    psql -v ON_ERROR_STOP=1 -q -a -P pager=off -f ${i} -v SMALL_STORAGE="${SMALL_STORAGE}" -v MEDIUM_STORAGE="${MEDIUM_STORAGE}" -v LARGE_STORAGE="${LARGE_STORAGE}" -v DISTRIBUTED_BY="${DISTRIBUTED_BY}"
+    log_time "psql -v ON_ERROR_STOP=1 -q -a -P pager=off -f ${i} -v SMALL_STORAGE=\"${SMALL_STORAGE}\" -v MEDIUM_STORAGE=\"${MEDIUM_STORAGE}\" -v LARGE_STORAGE=\"${LARGE_STORAGE}\" -v DISTRIBUTED_BY=\"${DISTRIBUTED_BY}\" -v ext_schema_name=\"$ext_schema_name\" -v schema_name=\"$schema_name\""
+    psql -v ON_ERROR_STOP=1 -q -a -P pager=off -f ${i} -v SMALL_STORAGE="${SMALL_STORAGE}" -v MEDIUM_STORAGE="${MEDIUM_STORAGE}" -v LARGE_STORAGE="${LARGE_STORAGE}" -v DISTRIBUTED_BY="${DISTRIBUTED_BY} -v ext_schema_name="$ext_schema_name" -v schema_name="$schema_name""
 
     print_log
   done
