@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+# set -e
 
 PWD=$(get_pwd ${BASH_SOURCE[0]})
 
@@ -90,7 +90,7 @@ start_log
 
 if [ "${BENCH_ROLE}" != "gpadmin" ]; then
   log_time "Drop role dependencies for ${BENCH_ROLE}"
-  psql -v ON_ERROR_STOP=1 -q -P pager=off -c "${DropRoleDenp}"
+  psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${DropRoleDenp}"
   log_time "Drop role ${BENCH_ROLE}"
   psql -v ON_ERROR_STOP=0 -q -P pager=off -c "${DropRole}"
   log_time "Creating role ${BENCH_ROLE}"
