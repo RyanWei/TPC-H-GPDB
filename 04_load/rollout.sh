@@ -86,7 +86,7 @@ table_name="tpch"
 
 start_log
 #Analyze schema using analyzedb
-analyzedb -d ${dbname} -s tpch --full -a
+analyzedb -d ${dbname} -s ${schema_name} --full -a
 
 #make sure root stats are gathered
 if [ "${VERSION}" == "gpdb_5" ]; then
