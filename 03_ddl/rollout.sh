@@ -9,7 +9,7 @@ get_version
 
 filter="gpdb"
 schema_name=${SCHEMA_NAME}
-ext_schema_name= "ext_${SCHEMA_NAME}"
+ext_schema_name="ext_${SCHEMA_NAME}"
 
 if [ "${DROP_EXISTING_TABLES}" == "true" ]; then
   #Create tables
