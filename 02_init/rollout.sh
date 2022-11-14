@@ -6,7 +6,7 @@ PWD=$(get_pwd ${BASH_SOURCE[0]})
 step="init"
 init_log ${step}
 start_log
-schema_name="tpch"
+schema_name=${SCHEMA_NAME}
 table_name="init"
 
 function set_segment_bashrc()

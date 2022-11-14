@@ -1,4 +1,4 @@
-CREATE TABLE tpch.nation
+CREATE TABLE :schema_name.nation
 (N_NATIONKEY INTEGER, 
 N_NAME CHAR(25), 
 N_REGIONKEY INTEGER, 
