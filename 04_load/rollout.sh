@@ -33,10 +33,10 @@ function start_gpfdist()
   stop_gpfdist
   sleep 1
   get_gpfdist_port
-  if [ "${VERSION}" == "gpdb_6" ] || [ "${VERSION}" == "gpdb_7" ] || [ "${VERSION}" == "gpdb_8" ]; then
-    SQL_QUERY="select rank() over(partition by g.hostname order by g.datadir), g.hostname, g.datadir from gp_segment_configuration g where g.content >= 0 and g.role = '${GPFDIST_LOCATION}' order by g.hostname"
-  else
+  if [ "${VERSION}" == "gpdb_5" ]; then
     SQL_QUERY="select rank() over (partition by g.hostname order by p.fselocation), g.hostname, p.fselocation as path from gp_segment_configuration g join pg_filespace_entry p on g.dbid = p.fsedbid join pg_tablespace t on t.spcfsoid = p.fsefsoid where g.content >= 0 and g.role = '${GPFDIST_LOCATION}' and t.spcname = 'pg_default' order by g.hostname"
+  else
+    SQL_QUERY="select rank() over(partition by g.hostname order by g.datadir), g.hostname, g.datadir from gp_segment_configuration g where g.content >= 0 and g.role = '${GPFDIST_LOCATION}' order by g.hostname"
   fi
   for i in $(psql -v ON_ERROR_STOP=1 -q -A -t -c "${SQL_QUERY}"); do
     CHILD=$(echo ${i} | awk -F '|' '{print $1}')
@@ -53,15 +53,16 @@ function start_gpfdist()
 copy_script
 start_gpfdist
 
+schema_name=${SCHEMA_NAME}
+ext_schema_name="ext_${SCHEMA_NAME}"
+
 for i in $(ls ${PWD}/*.${filter}.*.sql); do
   start_log
 
   id=$(echo ${i} | awk -F '.' '{print $1}')
-  schema_name=$(echo ${i} | awk -F '.' '{print $2}')
   table_name=$(echo ${i} | awk -F '.' '{print $3}')
-
-  log_time "psql -v ON_ERROR_STOP=1 -f ${i} | grep INSERT | awk -F ' ' '{print \$3}'"
-  tuples=$(psql -v ON_ERROR_STOP=1 -f ${i} | grep INSERT | awk -F ' ' '{print $3}'; exit ${PIPESTATUS[0]})
+  log_time "psql -v ON_ERROR_STOP=1 -f ${i} -v ext_schema_name=\"$ext_schema_name\" -v schema_name=\"$schema_name\" | grep INSERT | awk -F ' ' '{print \$3}'"
+  tuples=$(psql -v ON_ERROR_STOP=1 -f ${i} -v ext_schema_name="$ext_schema_name" -v schema_name="$schema_name" | grep INSERT | awk -F ' ' '{print $3}'; exit ${PIPESTATUS[0]})
 
   print_log ${tuples}
 done
@@ -80,20 +81,20 @@ if [ "${PGPORT}" == "" ]; then
 fi
 
 
-schema_name="tpch"
+schema_name=${SCHEMA_NAME}
 table_name="tpch"
 
 start_log
 #Analyze schema using analyzedb
-analyzedb -d ${dbname} -s tpch --full -a
+analyzedb -d ${dbname} -s ${schema_name} --full -a
 
 #make sure root stats are gathered
-if [ "${VERSION}" == "gpdb_7" ] || [ "${VERSION}" == "gpdb_8" ]; then
-  SQL_QUERY="select n.nspname, c.relname from pg_class c join pg_namespace n on c.relnamespace = n.oid left outer join (select starelid from pg_statistic group by starelid) s on c.oid = s.starelid join pg_partitioned_table p on p.partrelid = c.oid where n.nspname = 'tpch' and s.starelid is null order by 1, 2"
+if [ "${VERSION}" == "gpdb_5" ]; then
+  SQL_QUERY="select n.nspname, c.relname from pg_class c join pg_namespace n on c.relnamespace = n.oid join pg_partitions p on p.schemaname = n.nspname and p.tablename = c.relname where n.nspname = 'tpch' and p.partitionrank is null and c.reltuples = 0 order by 1, 2"
 elif [ "${VERSION}" == "gpdb_6" ]; then
   SQL_QUERY="select n.nspname, c.relname from pg_class c join pg_namespace n on c.relnamespace = n.oid left outer join (select starelid from pg_statistic group by starelid) s on c.oid = s.starelid join (select tablename from pg_partitions group by tablename) p on p.tablename = c.relname where n.nspname = 'tpch' and s.starelid is null order by 1, 2"
 else
-  SQL_QUERY="select n.nspname, c.relname from pg_class c join pg_namespace n on c.relnamespace = n.oid join pg_partitions p on p.schemaname = n.nspname and p.tablename = c.relname where n.nspname = 'tpch' and p.partitionrank is null and c.reltuples = 0 order by 1, 2"
+  SQL_QUERY="select n.nspname, c.relname from pg_class c join pg_namespace n on c.relnamespace = n.oid left outer join (select starelid from pg_statistic group by starelid) s on c.oid = s.starelid join pg_partitioned_table p on p.partrelid = c.oid where n.nspname = 'tpch' and s.starelid is null order by 1, 2"
 fi
 for t in $(psql -v ON_ERROR_STOP=1 -q -t -A -c "${SQL_QUERY}"); do
   schema_name=$(echo ${t} | awk -F '|' '{print $1}')

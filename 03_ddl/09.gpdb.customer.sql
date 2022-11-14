@@ -1,4 +1,4 @@
-CREATE TABLE tpch.customer
+CREATE TABLE :schema_name.customer
 (C_CUSTKEY INT, 
 C_NAME VARCHAR(25),
 C_ADDRESS VARCHAR(40),

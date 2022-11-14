@@ -6,7 +6,7 @@ PWD=$(get_pwd ${BASH_SOURCE[0]})
 step="compile_tpch"
 init_log ${step}
 start_log
-schema_name="tpch"
+schema_name=${SCHEMA_NAME}
 table_name="compile"
 
 function make_tpc()

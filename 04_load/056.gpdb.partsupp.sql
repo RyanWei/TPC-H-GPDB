@@ -1,4 +1,4 @@
-INSERT INTO tpch.partsupp 
+INSERT INTO :schema_name.partsupp 
 (ps_partkey, ps_suppkey, ps_availqty, ps_supplycost, ps_comment)
 SELECT ps_partkey, ps_suppkey, ps_availqty, ps_supplycost, ps_comment 
-FROM ext_tpch.partsupp;
+FROM :ext_schema_name.partsupp;

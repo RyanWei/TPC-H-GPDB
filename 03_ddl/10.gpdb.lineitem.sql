@@ -1,4 +1,4 @@
-CREATE TABLE tpch.lineitem
+CREATE TABLE :schema_name.lineitem
 (L_ORDERKEY BIGINT,
 L_PARTKEY INT,
 L_SUPPKEY INT,

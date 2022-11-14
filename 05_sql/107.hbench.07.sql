@@ -1,5 +1,5 @@
 set role hbench;
-set search_path=tpch,public;
+set search_path=:schema_name,public;
 :EXPLAIN_ANALYZE
 -- using 1655345920 as a seed to the RNG
 
