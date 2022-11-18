@@ -45,7 +45,7 @@ function copy_tpc()
 function check_binary() {
   set +e
   
-  cd ${PWD}/tools/
+  cd ${PWD}/dbgen/
   if [ "${CHIP_TYPE}" == "arm" ]; then
   cp -f dbgen.arm dbgen
   cp -f qgen.arm qgen
