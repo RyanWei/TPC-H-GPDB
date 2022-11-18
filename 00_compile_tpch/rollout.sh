@@ -38,9 +38,8 @@ function copy_tpc()
   #copy the compiled dbgen program to the segment nodes
   echo "copy tpch binaries to segment hosts"
   for i in $(cat ${TPC_H_DIR}/segment_hosts.txt); do
-    scp ${PWD}/dbgen/dbgen ${PWD}/dbgen/dists.dss ${i}: &
+    scp ${PWD}/dbgen/dbgen ${PWD}/dbgen/dists.dss ${i}:
   done
-  wait
 }
 
 function check_binary() {
