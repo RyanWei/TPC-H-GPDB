@@ -46,6 +46,7 @@ function start_gpfdist()
     PORT=$((GPFDIST_PORT + CHILD))
     echo "executing on ${EXT_HOST} ./start_gpfdist.sh $PORT ${GEN_DATA_PATH}"
     ssh -n -f ${EXT_HOST} "bash -c 'cd ~${ADMIN_USER}; source ./.bash_profile; ./start_gpfdist.sh $PORT ${GEN_DATA_PATH}'"
+    sleep 1
   done
 }
 
