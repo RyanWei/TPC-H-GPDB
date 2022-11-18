@@ -9,6 +9,8 @@ start_log
 schema_name=${SCHEMA_NAME}
 table_name="compile"
 
+compile_flag="true"
+
 function make_tpc()
 {
   #compile the tools
@@ -40,7 +42,36 @@ function copy_tpc()
   done
 }
 
-make_tpc
+function check_binary() {
+  set +e
+  
+  cd ${PWD}/tools/
+  if [ "${CHIP_TYPE}" == "arm" ]; then
+  cp -f dbgen.arm dbgen
+  cp -f qgen.arm qgen
+  chmod +x dbgen
+  chmod +x qgen
+  fi
+
+  ./dbgen -h
+  if [ $? == 0 ]; then 
+    ./qgen -h
+    if [ $? == 0 ]; then
+      compile_flag="false" 
+    fi
+  fi
+  cd ..
+  set -e
+}
+
+check_binary
+
+if [ "${compile_flag}" == "true" ]; then
+  make_tpc
+else
+  echo "Binary works, no compiling needed."
+fi
+
 create_hosts_file
 copy_queries
 copy_tpc

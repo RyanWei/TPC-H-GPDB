@@ -3,6 +3,7 @@ export ADMIN_USER="gpadmin"
 export BENCH_ROLE="hbench"
 export SCHEMA_NAME="tpch"
 export GREENPLUM_PATH=$GPHOME/greenplum_path.sh
+export CHIP_TYPE="arm"
 
 # benchmark options
 export GEN_DATA_SCALE="1"
