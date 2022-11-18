@@ -54,6 +54,7 @@ function check_binary() {
   fi
 
   ./dbgen -h
+  echo $?
   if [ $? == 0 ]; then 
     ./qgen -h
     if [ $? == 0 ]; then
