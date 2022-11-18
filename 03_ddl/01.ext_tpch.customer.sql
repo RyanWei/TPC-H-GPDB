@@ -1,4 +1,4 @@
-CREATE EXTERNAL TABLE ext_tpch.customer
+CREATE EXTERNAL TABLE :ext_schema_name.customer
 (C_CUSTKEY INT,
 C_NAME VARCHAR(25),
 C_ADDRESS VARCHAR(40),

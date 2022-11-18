@@ -1,4 +1,4 @@
-CREATE TABLE tpch.orders
+CREATE TABLE :schema_name.orders
 (O_ORDERKEY BIGINT,
 O_CUSTKEY INT,
 O_ORDERSTATUS CHAR(1),
@@ -9,4 +9,4 @@ O_CLERK  CHAR(15),
 O_SHIPPRIORITY INTEGER,
 O_COMMENT VARCHAR(79),
 dummy text);
-ALTER TABLE tpch.orders ADD PRIMARY KEY (o_orderkey);
+ALTER TABLE :schema_name.orders ADD PRIMARY KEY (o_orderkey);

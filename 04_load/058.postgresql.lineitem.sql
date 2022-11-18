@@ -1,1 +1,1 @@
-COPY tpch.lineitem FROM :filename WITH DELIMITER '|' NULL '';
+COPY :schema_name.lineitem FROM :filename WITH DELIMITER '|' NULL '';

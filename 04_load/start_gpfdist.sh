@@ -5,6 +5,11 @@ PWD=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 GPFDIST_PORT=${1}
 GEN_DATA_PATH=${2}
 seghost=`hostname`
+gphome=${3}
+
+if [ -z "$GPHOME" ]; then
+    source $gphome/greenplum_path.sh
+fi
 
 gpfdist -p ${GPFDIST_PORT} -d ${GEN_DATA_PATH} > gpfdist.${GPFDIST_PORT}.log 2>&1 < gpfdist.${GPFDIST_PORT}.log &
 pid=$!
