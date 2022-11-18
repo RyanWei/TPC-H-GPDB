@@ -46,12 +46,10 @@ function check_binary() {
   set +e
   
   cd ${PWD}/dbgen/
-  if [ "${CHIP_TYPE}" == "arm" ]; then
-  cp -f dbgen.arm dbgen
-  cp -f qgen.arm qgen
+  cp -f dbgen.${CHIP_TYPE} dbgen
+  cp -f qgen.${CHIP_TYPE} qgen
   chmod +x dbgen
   chmod +x qgen
-  fi
 
   ./dbgen -h
   if [ $? == 1 ]; then 
