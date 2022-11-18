@@ -54,8 +54,7 @@ function check_binary() {
   fi
 
   ./dbgen -h
-  echo $?
-  if [ $? == 0 ]; then 
+  if [ $? == 1 ]; then 
     ./qgen -h
     if [ $? == 0 ]; then
       compile_flag="false" 
@@ -66,8 +65,6 @@ function check_binary() {
 }
 
 check_binary
-
-echo $compile_flag
 
 if [ "${compile_flag}" == "true" ]; then
   make_tpc
