@@ -1,4 +1,4 @@
-CREATE TABLE tpch.part
+CREATE TABLE :schema_name.part
 (P_PARTKEY INT,
 P_NAME VARCHAR(55),
 P_MFGR CHAR(25),
@@ -9,4 +9,4 @@ P_CONTAINER CHAR(10),
 P_RETAILPRICE DECIMAL(15,2),
 P_COMMENT VARCHAR(23),
 dummy text);
-ALTER TABLE tpch.part ADD PRIMARY KEY (p_partkey);
+ALTER TABLE :schema_name.part ADD PRIMARY KEY (p_partkey);

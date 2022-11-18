@@ -1,4 +1,4 @@
-CREATE TABLE tpch.part
+CREATE TABLE :schema_name.part
 (P_PARTKEY INT,
 P_NAME VARCHAR(55),
 P_MFGR CHAR(25),

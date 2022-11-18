@@ -1,4 +1,4 @@
-CREATE TABLE tpch.partsupp
+CREATE TABLE :schema_name.partsupp
 (PS_PARTKEY INT,
 PS_SUPPKEY INT,
 PS_AVAILQTY INTEGER,

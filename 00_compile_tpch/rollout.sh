@@ -6,15 +6,17 @@ PWD=$(get_pwd ${BASH_SOURCE[0]})
 step="compile_tpch"
 init_log ${step}
 start_log
-schema_name="tpch"
+schema_name=${SCHEMA_NAME}
 table_name="compile"
+
+compile_flag="true"
 
 function make_tpc()
 {
   #compile the tools
   cd ${PWD}/dbgen
   rm -f ./*.o
-  make
+  ADDITIONAL_CFLAGS_OPTION="-g -Wno-unused-function -Wno-unused-but-set-variable -Wno-format -fcommon" make
   cd ..
 }
 
@@ -40,7 +42,34 @@ function copy_tpc()
   done
 }
 
-make_tpc
+function check_binary() {
+  set +e
+  
+  cd ${PWD}/dbgen/
+  cp -f dbgen.${CHIP_TYPE} dbgen
+  cp -f qgen.${CHIP_TYPE} qgen
+  chmod +x dbgen
+  chmod +x qgen
+
+  ./dbgen -h
+  if [ $? == 1 ]; then 
+    ./qgen -h
+    if [ $? == 0 ]; then
+      compile_flag="false" 
+    fi
+  fi
+  cd ..
+  set -e
+}
+
+check_binary
+
+if [ "${compile_flag}" == "true" ]; then
+  make_tpc
+else
+  echo "Binary works, no compiling needed."
+fi
+
 create_hosts_file
 copy_queries
 copy_tpc

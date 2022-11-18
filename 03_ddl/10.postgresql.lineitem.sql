@@ -1,4 +1,4 @@
-CREATE TABLE tpch.lineitem
+CREATE TABLE :schema_name.lineitem
 (L_ORDERKEY BIGINT,
 L_PARTKEY INT,
 L_SUPPKEY INT,
@@ -16,4 +16,4 @@ L_SHIPINSTRUCT CHAR(25),
 L_SHIPMODE CHAR(10),
 L_COMMENT VARCHAR(44),
 dummy text);
-ALTER TABLE tpch.lineitem ADD PRIMARY KEY (l_orderkey, l_linenumber);
+ALTER TABLE :schema_name.lineitem ADD PRIMARY KEY (l_orderkey, l_linenumber);
