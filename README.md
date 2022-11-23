@@ -261,7 +261,7 @@ Table storage is defined in `functions.sh` and is configured for optimal perform
 - `MEDIUM_STORAGE`: `customer`, `part`, `partsupp`, and `supplier`
 - `LARGE_STORAGE`: `lineitem` and `orders`
 
-Table distribution keys are defined in `../03_ddl/distribution.txt`, you can modify tables' distribution keys by changing this file.
+Table distribution keys are defined in `../03_ddl/distribution.txt`, you can modify tables' distribution keys by changing this file. You can set the distribution method to hash with colunm names or "REPLICATED".
 
 #### Play with different options
 - Change different storage options in `functions.sh` to try with different compress options and whether use AO/CO storage.
