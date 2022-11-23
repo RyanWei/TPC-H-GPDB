@@ -28,7 +28,7 @@ if [ "${DROP_EXISTING_TABLES}" == "true" ]; then
           distribution=$(echo ${z} | awk -F '|' '{print $3}')
         fi
       done
-      if [ "${distribution}" == "REPLICATED" ]; then
+      if [ "${distribution^^}" == "REPLICATED" ]; then
         DISTRIBUTED_BY="DISTRIBUTED REPLICATED"
       else
         DISTRIBUTED_BY="DISTRIBUTED BY (${distribution})"
